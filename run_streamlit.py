@@ -1,4 +1,9 @@
 import streamlit as st
+from pathlib import Path
+
+from app.backend.api.routes.llms import get_llm_response
+from app.backend.api.routes.docs import index_documents
+from app.settings.constants import DATA_DIR
 
 st.title("File QnA Demo with Gemma")
 files = st.file_uploader(label="Upload file(s)", 
@@ -11,12 +16,30 @@ user_query = st.text_input(
     disabled=not files,
 )
 
-if files and user_query:
+if files and user_query and len(files) <= 3:
     # Call an API that indexes the files using llamaindex and then queries it
     st.write("Processing your query...")
     # Here you would typically call your backend API to handle the file processing and querying
-    # For demonstration, we will just simulate a response
-    st.write("Simulated response: This is a summary of the uploaded files based on your query.")
+    for file in files:
+        save_path = Path(DATA_DIR, file.name)
+        with open(save_path, mode='wb') as f:
+            f.write(file.getvalue())
+            
+            if save_path.exists():
+                st.success(f"File {file.name} saved successfully at {save_path}")
+            else:
+                st.error(f"Failed to save file {file.name} at {save_path}")
+    # create an index from the uploaded files via llamaindex
+    index = index_documents(
+        files=files,
+    )
+    
+    # Call the LLM to get a response based on the user query
+    response = get_llm_response(
+        user_query=user_query
+    )
+    
+    
 else:
     if not files:
         st.warning("Please upload at least one and at most three files to ask a question.")
