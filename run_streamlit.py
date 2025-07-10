@@ -30,14 +30,13 @@ if files and user_query and len(files) <= 3:
             else:
                 st.error(f"Failed to save file {file.name} at {save_path}")
     # create an index from the uploaded files via llamaindex
-    index = index_documents(
-        files=files,
-    )
+    index = index_documents()
     
     # Call the LLM to get a response based on the user query
     response = get_llm_response(
         user_query=user_query
     )
+    st.write(f"Response from LLM:\n {response['response']}")
     
     
 else:

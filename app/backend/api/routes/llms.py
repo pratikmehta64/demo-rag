@@ -8,7 +8,7 @@ from app.settings.models import llm_model, embed_model
 router = APIRouter(prefix="/llms", tags=["llms"])
 
 @router.post("/")
-async def get_llm_response(
+def get_llm_response(
     *,
     user_query: str = None,
 ):
@@ -24,11 +24,10 @@ async def get_llm_response(
             storage_context,
             embed_model=embed_model,
         )
-        if index:
+        print("Index loaded successfully.")
+        # if index:
             # Set and use the query engine with the provided index
-            query_engine = index.as_query_engine(
-            llm=llm_model
-        )
+        query_engine = index.as_query_engine()
     except Exception as e:
         return {"error": f"Failed to load index or query engine: {str(e)}"}
     try:

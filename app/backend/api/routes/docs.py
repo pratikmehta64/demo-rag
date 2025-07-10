@@ -1,20 +1,19 @@
 from fastapi import APIRouter
 from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
 from llama_index.core.schema import Document
-from app.settings.models import embed_model
-from app.settings.constants import INDEX_DIR
+from app.settings.models import embed_model, llm_model
+from app.settings.constants import INDEX_DIR, DATA_DIR
 from typing import Any
 
 router = APIRouter(prefix="/docs", tags=["docs"])
 
 @router.post("/")
-async def index_documents(
-    *, 
-    files: list[Document] = None,
+def index_documents(
 ) -> dict[str, str]:
-    if files:
+    documents = SimpleDirectoryReader(DATA_DIR).load_data()
+    if documents:
         index = VectorStoreIndex.from_documents(
-            documents=files,
+            documents=documents,
             embed_model=embed_model,
         )
         # Save the index to the storage context
