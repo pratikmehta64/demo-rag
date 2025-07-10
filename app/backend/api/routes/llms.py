@@ -3,7 +3,7 @@ from llama_index.core import VectorStoreIndex, StorageContext, load_index_from_s
 from llama_index.core.schema import Document
 from app.settings.constants import INDEX_DIR
 from app.settings.models import llm_model, embed_model
-
+from app.backend.prompts.system_prompt import SystemPrompt
 
 router = APIRouter(prefix="/llms", tags=["llms"])
 
@@ -11,6 +11,7 @@ router = APIRouter(prefix="/llms", tags=["llms"])
 def get_llm_response(
     *,
     user_query: str = None,
+    length: str = "short",
 ):
     """
     Endpoint to get a response from the LLM model.
@@ -27,6 +28,15 @@ def get_llm_response(
         print("Index loaded successfully.")
         # if index:
             # Set and use the query engine with the provided index
+        # sys_prompt = SystemPrompt()
+        # if length.lower() == "short":
+        #     sys_prompt.set_short_response_prompt()    
+        # elif length.lower() == "long":
+        #     sys_prompt.set_long_response_prompt()
+        # else:
+        #     return {"error": "Invalid length specified. Use 'short' or 'long'."}
+        
+        # llm_model.system_prompt = sys_prompt.get_prompt()
         query_engine = index.as_query_engine()
     except Exception as e:
         return {"error": f"Failed to load index or query engine: {str(e)}"}

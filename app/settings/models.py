@@ -11,10 +11,8 @@ system_prompt = SystemPrompt()
 # embed_model = Ollama(model=EMBED_MODEL_NAME)
 embed_model = HuggingFaceEmbedding(model_name="all-mpnet-base-v2")
 
-llm_model = FunctionAgent(
-    llm=Ollama(model=LLM_MODEL_NAME),
-    embed_model='local',
+llm_model = Ollama(model=LLM_MODEL_NAME,
     request_timeout=360.0,
-    system_prompt = system_prompt.get_prompt(),
-)
+    system_prompt = system_prompt.get_prompt()
+    )
 
