@@ -37,10 +37,10 @@ if files and user_query and len(files) <= 3:
     index = index_documents()
     
     # Call the LLM to get a response based on the user query
-    llm_response = asyncio.run(get_llm_response(
+    llm_response = get_llm_response(
         user_query=user_query,
         length="Long".lower()
-    ))
+    )
     st.write(f"Response from LLM:\n {llm_response}")
     
     

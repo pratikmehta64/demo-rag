@@ -1,0 +1,3 @@
+[console_scripts]
+backendrun = app:main
+strun = run_streamlit

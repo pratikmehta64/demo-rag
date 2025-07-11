@@ -1,13 +1,13 @@
 # demo-rag
 RAG++
 
-# Installation
+# Installation instructions for unix
+
 Pre-requisites:
-1. uv
-2. ollama
+1. uv (`pip install uv`)
 
 Instructions:
-uv install -r requirements.txt
+1. `uv sync`
 
 Run the frontend via streamlit
 1. `cd demo-rag`
